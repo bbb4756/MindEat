@@ -1,118 +1,112 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
+import 'react-native-gesture-handler';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {Image} from 'react-native';
+import {StyleSheet, Platform} from 'react-native';
+import Home from './src/Screens/Home';
+import Library from './src/Screens/Library';
+import MyPage from './src/Screens/MyPage';
+import Calendar from './src/Screens/Calendar';
+type RouteNameType = 'Home' | 'Calendar' | 'Library' | 'MyPage';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+type TabBarIconProps = {
+  focused: boolean;
+};
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+type RootStackParamList = {
+  Home: object;
+  Library: object;
+  MyPage: object;
+  Calendar: object;
+};
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+const Tab = createBottomTabNavigator<RootStackParamList>();
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+// Dynamic icon generation based on route name
+const generateTabIcons = () => {
+  const icons = {
+    default: {
+      Home: require('./src/Assets/Footer/home.png'),
+      Calendar: require('./src/Assets/Footer/calendar.png'),
+      Library: require('./src/Assets/Footer/library.png'),
+      MyPage: require('./src/Assets/Footer/mypage.png'),
+    },
+    focused: {
+      Home: require('./src/Assets/Footer/focused_home.png'),
+      Calendar: require('./src/Assets/Footer/focused_calendar.png'),
+      Library: require('./src/Assets/Footer/focused_library.png'),
+      MyPage: require('./src/Assets/Footer/focused_mypage.png'),
+    },
   };
 
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+  return (route: {name: RouteNameType}) => ({
+    tabBarIcon: (props: TabBarIconProps) => (
+      <Image
+        source={
+          props.focused ? icons.focused[route.name] : icons.default[route.name]
+        }
+        style={iconStyle.iconSize}
       />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
+    ),
+  });
+};
+const iconStyle = StyleSheet.create({
+  iconSize: {
+    width: 18,
+    height: 18,
   },
 });
+
+const App: React.FC = () => {
+  const getTabBarIcon = generateTabIcons();
+
+  return (
+    <GestureHandlerRootView style={{flex: 1}}>
+      <NavigationContainer>
+        <Tab.Navigator
+          initialRouteName="Calendar"
+          screenOptions={({route}) => ({
+            headerShown: false,
+            ...getTabBarIcon(route),
+            tabBarActiveTintColor: 'black',
+            tabBarInactiveTintColor: '#999',
+            tabBarLabelStyle: {
+              fontSize: 12,
+              fontWeight: '500',
+            },
+            tabBarStyle: [
+              {
+                height: 60,
+                paddingBottom: 10,
+                borderTopWidth: 1,
+                borderTopColor: '#eee',
+                backgroundColor: '#fff',
+              },
+              Platform.OS === 'ios' && {marginBottom: 15},
+            ],
+          })}>
+          <Tab.Screen name="Home" component={Home} options={{title: 'HOME'}} />
+          <Tab.Screen
+            name="Calendar"
+            component={Calendar}
+            options={{title: 'CALENDAR'}}
+          />
+          <Tab.Screen
+            name="Library"
+            component={Library}
+            options={{title: 'LIBRARY'}}
+          />
+          <Tab.Screen
+            name="MyPage"
+            component={MyPage}
+            options={{title: 'MY PAGE'}}
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </GestureHandlerRootView>
+  );
+};
 
 export default App;
