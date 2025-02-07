@@ -18,8 +18,14 @@ const Calendar = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [isMonthView, setIsMonthView] = useState(true);
   const [selectedWeek, setSelectedWeek] = useState([]);
+  // const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
-  const context = useSharedValue(0);
+  // const contextX = useSharedValue(0);
+  const contextY = useSharedValue(0);
+
+  // useEffect(() => {
+  //   console.log('늘');
+  // });
 
   useEffect(() => {
     const today = new Date();
@@ -29,7 +35,7 @@ const Calendar = () => {
 
   useEffect(() => {
     if (selectedWeek.length > 0) {
-      setCurrentDate(selectedWeek[0]); // 📌 주가 변경되면 currentDate 업데이트
+      setCurrentDate(selectedWeek[0]); // 주가 변경되면 currentDate 업데이트
     }
   }, [selectedWeek]);
 
@@ -38,20 +44,34 @@ const Calendar = () => {
   }, []);
 
   const gesture = Gesture.Pan()
-    .onStart(() => {
+    .onStart(event => {
       console.log('ononon');
       ('worklet');
-      context.value = translateY.value; // 기존 위치 저장
+      // console.log(
+      //   '시작점은 왜 항상 0일까',
+      //   event.translationX,
+      //   event.translationY,
+      // );
+      contextY.value = translateY.value; // 기존 위치 저장
     })
     .onUpdate(event => {
       'worklet';
-      translateY.value = context.value + event.translationY;
+      translateY.value = contextY.value + event.translationY;
+
+      console.log('움직일 때', event.translationX, event.translationY);
     })
-    .onEnd(() => {
+    .onEnd(event => {
       'worklet';
+
+      if (translateY.value > (CALENDAR_HEIGHT - WEEK_HEIGHT) / 2) {
+        console.log('펼치다');
+      } else {
+        console.log('접다');
+      }
+
       const targetValue =
         translateY.value > (CALENDAR_HEIGHT - WEEK_HEIGHT) / 2
-          ? CALENDAR_HEIGHT - WEEK_HEIGHT
+          ? CALENDAR_HEIGHT - WEEK_HEIGHT // 280기준
           : 0;
       translateY.value = withSpring(targetValue, SPRING_CONFIG, () => {
         runOnJS(updateIsMonthView)(targetValue !== 0);
@@ -79,44 +99,60 @@ const Calendar = () => {
 
   const gestureWeek = Gesture.Pan().onEnd(event => {
     'worklet';
+    if (isMonthView) {
+      //  월별 보기 상태에서 좌우 스와이프 시 월 변경 (주별 보기로 전환 X)
+      if (event.translationX > 50) {
+        runOnJS(handlePrevMonth)(); //  왼쪽으로 스와이프 → 이전 달
+      } else if (event.translationX < -50) {
+        runOnJS(handleNextMonth)(); //  오른쪽으로 스와이프 → 다음 달
+      }
+      return; // 월별 보기 상태에서는 여기서 끝냄
+    }
 
-    if (event.translationX > 50) {
-      // 👉 왼쪽으로 스와이프 → 이전 주
-      runOnJS(updateWeek)(-1);
-    } else if (event.translationX < -50) {
-      // 👉 오른쪽으로 스와이프 → 다음 주
-      runOnJS(updateWeek)(1);
+    //  주별 보기 상태에서 아래로 스와이프할 때만 월별 보기 전환
+    if (
+      event.translationY > 50 &&
+      Math.abs(event.translationY) > Math.abs(event.translationX)
+    ) {
+      runOnJS(updateIsMonthView)(true);
+    } else if (Math.abs(event.translationX) > 50) {
+      //  좌우 스와이프 시 주 변경 (주별 보기 상태일 때만)
+      if (event.translationX > 50) {
+        runOnJS(updateWeek)(-1); //  왼쪽으로 스와이프 → 이전 주
+      } else {
+        runOnJS(updateWeek)(1); //  오른쪽으로 스와이프 → 다음 주
+      }
     }
   });
 
   const animatedStyle = useAnimatedStyle(() => ({
     height: isMonthView ? CALENDAR_HEIGHT : WEEK_HEIGHT,
   }));
-  // 📌 현재 월의 일 수 반환
+  // 현재 월의 일 수 반환
   const getDaysInMonth = date => {
     const year = date.getFullYear();
     const month = date.getMonth();
     return new Date(year, month + 1, 0).getDate();
   };
-  // 📌 현재 월의 첫 번째 요일 반환
+  // 현재 월의 첫 번째 요일 반환
   const getFirstDayOfMonth = date => {
     const year = date.getFullYear();
     const month = date.getMonth();
     return new Date(year, month, 1).getDay();
   };
-  // 📌 이전 달 이동
+  // 이전 달 이동
   const handlePrevMonth = () => {
     setCurrentDate(
       new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1),
     );
   };
-  // 📌 다음 달 이동
+  // 다음 달 이동
   const handleNextMonth = () => {
     setCurrentDate(
       new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1),
     );
   };
-  // 📌 선택한 날짜의 주 정보 가져오기
+  // 선택한 날짜의 주 정보 가져오기
   const getWeekDays = date => {
     const day = date.getDay();
     const week = [];
@@ -130,14 +166,14 @@ const Calendar = () => {
 
     return week;
   };
-  // 📌 날짜 선택 핸들러
+  // 날짜 선택 핸들러
   const handleDateSelect = date => {
     setSelectedDate(date);
     const weekDays = getWeekDays(date);
     setSelectedWeek(weekDays);
   };
 
-  // 📌 월별 보기 렌더링
+  // 월별 보기 렌더링
   const renderCalendar = () => {
     if (!isMonthView) {
       return renderWeekView(); //주별 보기 렌더링
@@ -231,15 +267,29 @@ const Calendar = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={handlePrevMonth} style={styles.arrowButton}>
-          <Text style={styles.arrowText}>{'<'}</Text>
-        </TouchableOpacity>
+        <View style={{width: 40}}>
+          {isMonthView && ( // 월별 보기일 때만 화살표 표시
+            <TouchableOpacity
+              onPress={handlePrevMonth}
+              style={styles.arrowButton}>
+              <Text style={styles.arrowText}>{'<'}</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+
         <Text style={styles.headerText}>
           {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
         </Text>
-        <TouchableOpacity onPress={handleNextMonth} style={styles.arrowButton}>
-          <Text style={styles.arrowText}>{'>'}</Text>
-        </TouchableOpacity>
+
+        <View style={{width: 40}}>
+          {isMonthView && ( // 월별 보기일 때만 화살표 표시
+            <TouchableOpacity
+              onPress={handleNextMonth}
+              style={styles.arrowButton}>
+              <Text style={styles.arrowText}>{'>'}</Text>
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
 
       <GestureDetector gesture={isMonthView ? gesture : gestureWeek}>
@@ -259,11 +309,11 @@ const styles = StyleSheet.create({
   },
   calendarContainer: {
     calendarContainer: {
-      position: 'absolute', // 📌 상단 고정
-      top: 0, // 📌 화면 위쪽에 고정
+      position: 'absolute', // 상단 고정
+      top: 0, // 화면 위쪽에 고정
       left: 0,
       right: 0,
-      overflow: 'hidden', // 📌 자연스럽게 확장/축소
+      overflow: 'hidden', // 자연스럽게 확장/축소
       backgroundColor: 'white',
     },
   },
@@ -271,6 +321,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    height: 100,
     padding: 16,
   },
   headerText: {
