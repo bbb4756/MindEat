@@ -66,7 +66,7 @@ const App: React.FC = () => {
     <GestureHandlerRootView style={{flex: 1}}>
       <NavigationContainer>
         <Tab.Navigator
-          initialRouteName="Calendar"
+          initialRouteName="Home"
           screenOptions={({route}) => ({
             headerShown: false,
             ...getTabBarIcon(route),

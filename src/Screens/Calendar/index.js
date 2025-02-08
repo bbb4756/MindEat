@@ -8,7 +8,7 @@ import Animated, {
   withSpring,
   runOnJS,
 } from 'react-native-reanimated';
-
+import calendarStyles from './styles';
 const CALENDAR_HEIGHT = 380;
 const WEEK_HEIGHT = 100;
 const SPRING_CONFIG = {damping: 20, stiffness: 150};
@@ -18,15 +18,8 @@ const Calendar = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [isMonthView, setIsMonthView] = useState(true);
   const [selectedWeek, setSelectedWeek] = useState([]);
-  // const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
-  // const contextX = useSharedValue(0);
   const contextY = useSharedValue(0);
-
-  // useEffect(() => {
-  //   console.log('늘');
-  // });
-
   useEffect(() => {
     const today = new Date();
     setSelectedDate(today);
@@ -45,29 +38,15 @@ const Calendar = () => {
 
   const gesture = Gesture.Pan()
     .onStart(event => {
-      console.log('ononon');
       ('worklet');
-      // console.log(
-      //   '시작점은 왜 항상 0일까',
-      //   event.translationX,
-      //   event.translationY,
-      // );
       contextY.value = translateY.value; // 기존 위치 저장
     })
     .onUpdate(event => {
       'worklet';
       translateY.value = contextY.value + event.translationY;
-
-      console.log('움직일 때', event.translationX, event.translationY);
     })
     .onEnd(event => {
       'worklet';
-
-      if (translateY.value > (CALENDAR_HEIGHT - WEEK_HEIGHT) / 2) {
-        console.log('펼치다');
-      } else {
-        console.log('접다');
-      }
 
       const targetValue =
         translateY.value > (CALENDAR_HEIGHT - WEEK_HEIGHT) / 2
@@ -84,16 +63,11 @@ const Calendar = () => {
     setSelectedWeek(prevWeek => {
       const newWeek = prevWeek.map(date => {
         const newDate = new Date(date);
-        newDate.setDate(date.getDate() + direction * 7); // 7일 이동
+        newDate.setDate(date.getDate() + direction * 7);
         return newDate;
       });
-      return newWeek;
-    });
 
-    setSelectedDate(prevDate => {
-      const newDate = new Date(prevDate);
-      newDate.setDate(prevDate.getDate() + direction * 7);
-      return newDate;
+      return newWeek;
     });
   }, []);
 
@@ -154,23 +128,41 @@ const Calendar = () => {
   };
   // 선택한 날짜의 주 정보 가져오기
   const getWeekDays = date => {
-    const day = date.getDay();
     const week = [];
+    const selectedMonth = date.getMonth(); // 선택한 날짜의 월
+    const selectedYear = date.getFullYear();
 
-    // Get first day of the week (Sunday)
+    let firstDayOfWeek = new Date(date);
+    firstDayOfWeek.setDate(date.getDate() - date.getDay()); // 해당 주의 일요일 찾기
+
     for (let i = 0; i < 7; i++) {
-      const newDate = new Date(date);
-      newDate.setDate(date.getDate() - day + i);
+      let newDate = new Date(firstDayOfWeek);
+      newDate.setDate(firstDayOfWeek.getDate() + i);
+
+      // 주별 보기에서도 항상 현재 월을 유지 (이전 달 or 다음 달로 넘어가지 않게 조정)
+      if (
+        newDate.getMonth() !== selectedMonth ||
+        newDate.getFullYear() !== selectedYear
+      ) {
+        newDate = new Date(selectedYear, selectedMonth, newDate.getDate());
+      }
+
       week.push(newDate);
     }
 
     return week;
   };
+
   // 날짜 선택 핸들러
   const handleDateSelect = date => {
     setSelectedDate(date);
     const weekDays = getWeekDays(date);
-    setSelectedWeek(weekDays);
+
+    if (isMonthView) {
+      setCurrentDate(date); // 월별 보기에서 선택한 날짜를 기준으로 월 변경
+    }
+
+    setSelectedWeek(weekDays); // 항상 7개의 날짜가 나오도록 수정
   };
 
   // 월별 보기 렌더링
@@ -185,7 +177,7 @@ const Calendar = () => {
 
     // Add empty cells for days before the first day of the month
     for (let i = 0; i < firstDayOfMonth; i++) {
-      days.push(<View key={`empty-${i}`} style={styles.dayCell} />);
+      days.push(<View key={`empty-${i}`} style={calendarStyles.dayCell} />);
     }
 
     // Add days of the month
@@ -200,10 +192,15 @@ const Calendar = () => {
       days.push(
         <TouchableOpacity
           key={day}
-          style={styles.dayCell}
+          style={calendarStyles.dayCell}
           onPress={() => handleDateSelect(date)}>
-          <View style={[styles.day, isToday && styles.selectedDay]}>
-            <Text style={[styles.dayText, isToday && styles.selectedDayText]}>
+          <View
+            style={[calendarStyles.day, isToday && calendarStyles.selectedDay]}>
+            <Text
+              style={[
+                calendarStyles.dayText,
+                isToday && calendarStyles.selectedDayText,
+              ]}>
               {day}
             </Text>
           </View>
@@ -221,10 +218,15 @@ const Calendar = () => {
       return (
         <TouchableOpacity
           key={index}
-          style={styles.dayCell}
+          style={calendarStyles.dayCell}
           onPress={() => handleDateSelect(date)}>
-          <View style={[styles.day, isToday && styles.selectedDay]}>
-            <Text style={[styles.dayText, isToday && styles.selectedDayText]}>
+          <View
+            style={[calendarStyles.day, isToday && calendarStyles.selectedDay]}>
+            <Text
+              style={[
+                calendarStyles.dayText,
+                isToday && calendarStyles.selectedDayText,
+              ]}>
               {date.getDate()}
             </Text>
           </View>
@@ -255,9 +257,9 @@ const Calendar = () => {
       <Text
         key={day}
         style={[
-          styles.weekDayText,
-          index === 0 && styles.sundayText,
-          index === 6 && styles.saturdayText,
+          calendarStyles.weekDayText,
+          index === 0 && calendarStyles.sundayText,
+          index === 6 && calendarStyles.saturdayText,
         ]}>
         {day}
       </Text>
@@ -265,19 +267,19 @@ const Calendar = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
+    <SafeAreaView style={calendarStyles.container}>
+      <View style={calendarStyles.header}>
         <View style={{width: 40}}>
           {isMonthView && ( // 월별 보기일 때만 화살표 표시
             <TouchableOpacity
               onPress={handlePrevMonth}
-              style={styles.arrowButton}>
-              <Text style={styles.arrowText}>{'<'}</Text>
+              style={calendarStyles.arrowButton}>
+              <Text style={calendarStyles.arrowText}>{'<'}</Text>
             </TouchableOpacity>
           )}
         </View>
 
-        <Text style={styles.headerText}>
+        <Text style={calendarStyles.headerText}>
           {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
         </Text>
 
@@ -285,103 +287,22 @@ const Calendar = () => {
           {isMonthView && ( // 월별 보기일 때만 화살표 표시
             <TouchableOpacity
               onPress={handleNextMonth}
-              style={styles.arrowButton}>
-              <Text style={styles.arrowText}>{'>'}</Text>
+              style={calendarStyles.arrowButton}>
+              <Text style={calendarStyles.arrowText}>{'>'}</Text>
             </TouchableOpacity>
           )}
         </View>
       </View>
 
       <GestureDetector gesture={isMonthView ? gesture : gestureWeek}>
-        <Animated.View style={[styles.calendarContainer, animatedStyle]}>
-          <View style={styles.weekDays}>{renderWeekDays()}</View>
-          <View style={styles.calendar}>{renderCalendar()}</View>
+        <Animated.View
+          style={[calendarStyles.calendarContainer, animatedStyle]}>
+          <View style={calendarStyles.weekDays}>{renderWeekDays()}</View>
+          <View style={calendarStyles.calendar}>{renderCalendar()}</View>
         </Animated.View>
       </GestureDetector>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-  calendarContainer: {
-    calendarContainer: {
-      position: 'absolute', // 상단 고정
-      top: 0, // 화면 위쪽에 고정
-      left: 0,
-      right: 0,
-      overflow: 'hidden', // 자연스럽게 확장/축소
-      backgroundColor: 'white',
-    },
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    height: 100,
-    padding: 16,
-  },
-  headerText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  arrowButton: {
-    padding: 10,
-  },
-  arrowText: {
-    fontSize: 20,
-    color: 'rgb(156, 227, 255)',
-    fontWeight: 'bold',
-  },
-  weekDays: {
-    flexDirection: 'row',
-    paddingHorizontal: 16,
-    marginBottom: 8,
-  },
-  weekDayText: {
-    flex: 1,
-    textAlign: 'center',
-    color: '#666',
-  },
-  sundayText: {
-    color: '#FF0000',
-  },
-  saturdayText: {
-    color: '#0000FF',
-  },
-  calendar: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    paddingHorizontal: 16,
-  },
-  dayCell: {
-    width: '14.28%',
-    padding: 5,
-    alignItems: 'center',
-  },
-  day: {
-    width: 36,
-    height: 36,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  selectedDay: {
-    borderWidth: 2,
-    borderColor: '#007AFF',
-    borderRadius: 18,
-    backgroundColor: 'transparent',
-  },
-  dayText: {
-    fontSize: 16,
-    color: '#333',
-  },
-  selectedDayText: {
-    color: '#000',
-    fontWeight: 'bold',
-  },
-});
 
 export default Calendar;
