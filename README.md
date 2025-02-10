@@ -40,7 +40,7 @@
 
 > - 월 <-> 주 캘린더 전환 시 매끄러운 애니메이션을 구현하지 못함
 
-## 💥 Trouble Shooting
+## 💥 Troubleshooting
 
 > ### 1. react-native-reanimated, react-native-gesture-handler 라이브러리 설치 후, 프로젝트 빌드 실패 현상
 >
