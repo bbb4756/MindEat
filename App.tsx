@@ -9,6 +9,10 @@ import Home from './src/Screens/Home';
 import Library from './src/Screens/Library';
 import MyPage from './src/Screens/MyPage';
 import Calendar from './src/Screens/Calendar';
+
+import {useEffect} from 'react';
+import SplashScreen from 'react-native-splash-screen';
+
 type RouteNameType = 'Home' | 'Calendar' | 'Library' | 'MyPage';
 
 type TabBarIconProps = {
@@ -61,6 +65,14 @@ const iconStyle = StyleSheet.create({
 
 const App: React.FC = () => {
   const getTabBarIcon = generateTabIcons();
+
+  useEffect(() => {
+    const timer: NodeJS.Timeout = setTimeout(() => {
+      SplashScreen.hide();
+    }, 1500); // 3초 후에 스플래시 스크린 숨기기, 시간은 조정 가능
+
+    return () => clearTimeout(timer); // 클린업
+  }, []);
 
   return (
     <GestureHandlerRootView style={{flex: 1}}>

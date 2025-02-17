@@ -1,0 +1,6 @@
+<resources>
+    <color name="splash_background">#FFFFFF</color> <!-- 흰색 배경 -->
+    <color name="primary">#6200EE</color>
+    <color name="primary_dark">#3700B3</color>
+    <color name="accent">#03DAC5</color>
+</resources>
