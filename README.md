@@ -1,4 +1,6 @@
-# RN navigation 및 calendar 구현 과제
+# RN miniProject : MindEat : 다이어트 / 식단 일기
+
+# 기획 배경 및 기능 설명
 
 ## 🎥 구현 화면
 
