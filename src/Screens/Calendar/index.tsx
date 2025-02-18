@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState} from 'react';
 import {Alert, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {
   Agenda,
@@ -9,78 +9,26 @@ import {
 import moment from 'moment';
 import testIDs from './testIDs';
 
-interface State {
-  items?: AgendaSchedule;
-}
-
 const today = moment().format('YYYY-MM-DD');
-export default class AgendaScreen extends Component<State> {
-  state: State = {
-    items: undefined,
-  };
 
-  // reservationsKeyExtractor = (item, index) => {
-  //   return `${item?.reservation?.day}${index}`;
-  // };
+const AgendaScreen = () => {
+  const [items, setItems] = useState<AgendaSchedule | undefined>(undefined);
 
-  render() {
-    return (
-      <View style={{flex: 1}}>
-        {/* <View style={{flex: 0.2, backgroundColor: 'red'}}></View> */}
-        <Agenda
-          testID={testIDs.agenda.CONTAINER}
-          items={this.state.items}
-          loadItemsForMonth={this.loadItems}
-          selected={today}
-          renderItem={this.renderItem}
-          renderEmptyDate={this.renderEmptyDate}
-          rowHasChanged={this.rowHasChanged}
-          // showClosingKnob={true}
-          // markingType={'period'}
-          // markedDates={{
-          //    '2017-05-08': {textColor: '#43515c'},
-          //    '2017-05-09': {textColor: '#43515c'},
-          //    '2017-05-14': {startingDay: true, endingDay: true, color: 'blue'},
-          //  '2017-05-21': {startingDay: true, color: 'blue'},
-          //    '2017-05-22': {endingDay: true, color: 'gray'},
-          //    '2017-05-24': {startingDay: true, color: 'gray'},
-          //    '2017-05-25': {color: 'gray'},
-          //    '2017-05-26': {endingDay: true, color: 'gray'}}}
-          // monthFormat={'yyyy'}
-          theme={{
-            calendarBackground: 'white',
-            todayTextColor: 'green',
-            dotColor: '#86dd71',
-            // textSectionTitleColor: '#94e57f',
-            selectedDayBackgroundColor: '#86dd71',
-            todayDotColor: 'green',
-            indicatorColor: '#86dd71',
-
-            agendaTodayColor: 'green',
-          }}
-          // renderDay={this.renderDay}
-          // hideExtraDays={false}
-          showOnlySelectedDayItems
-          // reservationsKeyExtractor={this.reservationsKeyExtractor}
-        />
-      </View>
-    );
-  }
-
-  loadItems = (day: DateData) => {
-    const items = this.state.items || {};
+  // 날짜 데이터를 로드하는 함수
+  const loadItems = (day: DateData) => {
+    const currentItems = items || {};
 
     setTimeout(() => {
       for (let i = -15; i < 85; i++) {
-        const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-        const strTime = this.timeToString(time);
+        const time = day.timestamp + i * 24 * 60 * 60 * 1000; // 하루 단위로 시간 계산
+        const strTime = timeToString(time);
 
-        if (!items[strTime]) {
-          items[strTime] = [];
+        if (!currentItems[strTime]) {
+          currentItems[strTime] = [];
 
           const numItems = Math.floor(Math.random() * 3 + 1);
           for (let j = 0; j < numItems; j++) {
-            items[strTime].push({
+            currentItems[strTime].push({
               name: 'Item for ' + strTime + ' #' + j,
               height: Math.max(50, Math.floor(Math.random() * 150)),
               day: strTime,
@@ -90,23 +38,22 @@ export default class AgendaScreen extends Component<State> {
       }
 
       const newItems: AgendaSchedule = {};
-      Object.keys(items).forEach(key => {
-        newItems[key] = items[key];
+      Object.keys(currentItems).forEach(key => {
+        newItems[key] = currentItems[key];
       });
-      this.setState({
-        items: newItems,
-      });
+
+      setItems(newItems); // 상태 업데이트
     }, 1000);
   };
 
-  renderDay = (day: any) => {
-    if (day) {
-      return <Text style={styles.customDay}>{day.getDay()}</Text>;
-    }
-    return <View style={styles.dayItem} />;
+  // 날짜를 포맷팅하는 함수
+  const timeToString = (time: number) => {
+    const date = new Date(time);
+    return date.toISOString().split('T')[0];
   };
 
-  renderItem = (reservation: AgendaEntry, isFirst: boolean) => {
+  // 각 날짜 아이템을 렌더링하는 함수
+  const renderItem = (reservation: AgendaEntry, isFirst: boolean) => {
     const fontSize = isFirst ? 16 : 14;
     const color = isFirst ? 'black' : '#43515c';
 
@@ -120,7 +67,8 @@ export default class AgendaScreen extends Component<State> {
     );
   };
 
-  renderEmptyDate = () => {
+  // 비어 있는 날짜를 렌더링하는 함수
+  const renderEmptyDate = () => {
     return (
       <View style={styles.emptyDate}>
         <Text>This is empty date!</Text>
@@ -128,15 +76,36 @@ export default class AgendaScreen extends Component<State> {
     );
   };
 
-  rowHasChanged = (r1: AgendaEntry, r2: AgendaEntry) => {
+  // 아이템 변경 여부를 확인하는 함수
+  const rowHasChanged = (r1: AgendaEntry, r2: AgendaEntry) => {
     return r1.name !== r2.name;
   };
 
-  timeToString(time: number) {
-    const date = new Date(time);
-    return date.toISOString().split('T')[0];
-  }
-}
+  return (
+    <View style={{flex: 1}}>
+      <View style={{height: 100, backgroundColor: 'red'}}></View>
+      <Agenda
+        testID={testIDs.agenda.CONTAINER}
+        items={items}
+        loadItemsForMonth={loadItems}
+        selected={today}
+        renderItem={renderItem}
+        renderEmptyDate={renderEmptyDate}
+        rowHasChanged={rowHasChanged}
+        showClosingKnob={true} // Knob Bar 활성화
+        theme={{
+          calendarBackground: 'white',
+          todayTextColor: 'green',
+          dotColor: '#86dd71',
+          selectedDayBackgroundColor: '#86dd71',
+          todayDotColor: 'green',
+          indicatorColor: '#86dd71',
+          agendaTodayColor: 'green',
+        }}
+      />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   item: {
@@ -153,11 +122,14 @@ const styles = StyleSheet.create({
     paddingTop: 30,
   },
   customDay: {
-    margin: 10,
-    fontSize: 24,
-    color: 'green',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   dayItem: {
-    marginLeft: 34,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
+
+export default AgendaScreen;
