@@ -8,12 +8,12 @@ import {StyleSheet, Platform} from 'react-native';
 import Home from './src/Screens/Home';
 import Library from './src/Screens/Library';
 import MyPage from './src/Screens/MyPage';
-import Calendar from './src/Screens/Calendar';
+import CalendarScreen from './src/Screens/Calendar';
 
 import {useEffect} from 'react';
 import SplashScreen from 'react-native-splash-screen';
 
-type RouteNameType = 'Home' | 'Calendar' | 'Library' | 'MyPage';
+type RouteNameType = 'Home' | 'CalendarScreen' | 'Library' | 'MyPage';
 
 type TabBarIconProps = {
   focused: boolean;
@@ -23,7 +23,7 @@ type RootStackParamList = {
   Home: object;
   Library: object;
   MyPage: object;
-  Calendar: object;
+  CalendarScreen: object;
 };
 
 const Tab = createBottomTabNavigator<RootStackParamList>();
@@ -33,13 +33,13 @@ const generateTabIcons = () => {
   const icons = {
     default: {
       Home: require('./src/Assets/Footer/home.png'),
-      Calendar: require('./src/Assets/Footer/calendar.png'),
+      CalendarScreen: require('./src/Assets/Footer/calendar.png'),
       Library: require('./src/Assets/Footer/library.png'),
       MyPage: require('./src/Assets/Footer/mypage.png'),
     },
     focused: {
       Home: require('./src/Assets/Footer/focused_home.png'),
-      Calendar: require('./src/Assets/Footer/focused_calendar.png'),
+      CalendarScreen: require('./src/Assets/Footer/focused_calendar.png'),
       Library: require('./src/Assets/Footer/focused_library.png'),
       MyPage: require('./src/Assets/Footer/focused_mypage.png'),
     },
@@ -101,8 +101,8 @@ const App: React.FC = () => {
           })}>
           <Tab.Screen name="Home" component={Home} options={{title: 'HOME'}} />
           <Tab.Screen
-            name="Calendar"
-            component={Calendar}
+            name="CalendarScreen"
+            component={CalendarScreen}
             options={{title: 'CALENDAR'}}
           />
           <Tab.Screen
