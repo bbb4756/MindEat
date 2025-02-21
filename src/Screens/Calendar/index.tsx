@@ -93,6 +93,7 @@ const AgendaScreen = () => {
         renderEmptyDate={renderEmptyDate}
         rowHasChanged={rowHasChanged}
         showClosingKnob={true} // Knob Bar 활성화
+        showOnlySelectedDayItems
         theme={{
           calendarBackground: 'white',
           todayTextColor: 'green',
