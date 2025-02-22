@@ -78,15 +78,21 @@ const App: React.FC = () => {
     <GestureHandlerRootView style={{flex: 1}}>
       <NavigationContainer>
         <Tab.Navigator
-          initialRouteName="Home"
+          initialRouteName="CalendarScreen"
           screenOptions={({route}) => ({
-            headerShown: false,
             ...getTabBarIcon(route),
             tabBarActiveTintColor: 'black',
             tabBarInactiveTintColor: '#999',
             tabBarLabelStyle: {
               fontSize: 12,
               fontWeight: '500',
+            },
+            headerTitleAlign: 'center',
+            headerTitleStyle: {
+              fontFamily: 'KOROADB', // 원하는 폰트 적용
+              fontSize: 20, // 폰트 크기 조절
+              fontWeight: 'normal',
+              color: '#333', // 폰트 색상 변경
             },
             tabBarStyle: [
               {
@@ -99,21 +105,37 @@ const App: React.FC = () => {
               Platform.OS === 'ios' && {marginBottom: 15},
             ],
           })}>
-          <Tab.Screen name="Home" component={Home} options={{title: 'HOME'}} />
+          <Tab.Screen
+            name="Home"
+            component={Home}
+            options={{
+              title: 'HOME',
+              headerShown: true, // 헤더 표시
+            }}
+          />
           <Tab.Screen
             name="CalendarScreen"
             component={CalendarScreen}
-            options={{title: 'CALENDAR'}}
+            options={{
+              title: '식사 기록',
+              headerShown: true, // 헤더 표시
+            }}
           />
           <Tab.Screen
             name="Library"
             component={Library}
-            options={{title: 'LIBRARY'}}
+            options={{
+              title: 'LIBRARY',
+              headerShown: true, // 헤더 표시
+            }}
           />
           <Tab.Screen
             name="MyPage"
             component={MyPage}
-            options={{title: 'MY PAGE'}}
+            options={{
+              title: 'MY PAGE',
+              headerShown: true, // 헤더 표시
+            }}
           />
         </Tab.Navigator>
       </NavigationContainer>

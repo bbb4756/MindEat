@@ -49,9 +49,9 @@
 	<false/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>KOROAD_Bold.ttf</string>
-		<string>KOROAD_Light.ttf</string>
-		<string>KOROAD_Medium.ttf</string>
+		<string>KOROADB.ttf</string>
+		<string>KOROADL.ttf</string>
+		<string>KOROADM.ttf</string>
 	</array>
 </dict>
 </plist>

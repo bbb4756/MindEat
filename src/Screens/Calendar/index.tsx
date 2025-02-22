@@ -83,7 +83,9 @@ const AgendaScreen = () => {
 
   return (
     <View style={{flex: 1}}>
-      <View style={{height: 100, backgroundColor: 'red'}}></View>
+      <View style={{height: 100, backgroundColor: 'red'}}>
+        <TestFontScreen />
+      </View>
       <Agenda
         testID={testIDs.agenda.CONTAINER}
         items={items}
@@ -134,3 +136,16 @@ const styles = StyleSheet.create({
 });
 
 export default AgendaScreen;
+
+const TestFontScreen = () => {
+  return (
+    <View>
+      <Text style={{fontFamily: 'KOROADB', fontSize: 20}}>
+        폰트 테스트 (KoroadBold)
+      </Text>
+      <Text style={{fontFamily: 'KOROADB', fontSize: 20}}>
+        기본 시스템 폰트 테스트
+      </Text>
+    </View>
+  );
+};

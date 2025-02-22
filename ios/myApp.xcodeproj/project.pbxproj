@@ -8,16 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* myAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* myAppTests.m */; };
+		02272EE504474FD5BB2E0E95 /* KOROADM.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 62B60C1E9EB9450480C80816 /* KOROADM.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		2C876801701542109E088D8F /* KOROADL.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2E35E978AAC1435E9593A263 /* KOROADL.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		92DD66C2CD5DAC8A255BEEE3 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
+		D0C58A3544364A48A79368DC /* KOROADB.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 834C179F9A9049CAB556B7C3 /* KOROADB.ttf */; };
 		E33A84578E6102537EE7AA3B /* libPods-myApp-myAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A4B40C860CCED51456BA70A /* libPods-myApp-myAppTests.a */; };
 		ED6841D54C635245817B13F0 /* libPods-myApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 551ABB7F8CD6D59BFD06FC95 /* libPods-myApp.a */; };
-		5AB0576787C4400E827E42B6 /* KOROAD_Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DEF71F50BDC1483AB33AB739 /* KOROAD_Bold.ttf */; };
-		AF158C41D82D4CFEB8070670 /* KOROAD_Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E03A95EF703D4D549DEB7170 /* KOROAD_Light.ttf */; };
-		4EBC6FE8B0C446158B82F4BE /* KOROAD_Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3FF58814F7E049E48E352868 /* KOROAD_Medium.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,16 +42,16 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = myApp/main.m; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = myApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		19CFAAD4B4C9A4729191FC1A /* Pods-myApp-myAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-myApp-myAppTests.debug.xcconfig"; path = "Target Support Files/Pods-myApp-myAppTests/Pods-myApp-myAppTests.debug.xcconfig"; sourceTree = "<group>"; };
+		2E35E978AAC1435E9593A263 /* KOROADL.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = KOROADL.ttf; path = ../src/Assets/Fonts/KOROADL.ttf; sourceTree = "<group>"; };
 		551ABB7F8CD6D59BFD06FC95 /* libPods-myApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-myApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		62B60C1E9EB9450480C80816 /* KOROADM.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = KOROADM.ttf; path = ../src/Assets/Fonts/KOROADM.ttf; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = myApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		834C179F9A9049CAB556B7C3 /* KOROADB.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = KOROADB.ttf; path = ../src/Assets/Fonts/KOROADB.ttf; sourceTree = "<group>"; };
 		8A4B40C860CCED51456BA70A /* libPods-myApp-myAppTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-myApp-myAppTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB052BF20A1C8E7C99F4A8AD /* Pods-myApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-myApp.debug.xcconfig"; path = "Target Support Files/Pods-myApp/Pods-myApp.debug.xcconfig"; sourceTree = "<group>"; };
 		E7A2818B9C8B6834512D2627 /* Pods-myApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-myApp.release.xcconfig"; path = "Target Support Files/Pods-myApp/Pods-myApp.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		EE87CCF6EC8C96C0F4255839 /* Pods-myApp-myAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-myApp-myAppTests.release.xcconfig"; path = "Target Support Files/Pods-myApp-myAppTests/Pods-myApp-myAppTests.release.xcconfig"; sourceTree = "<group>"; };
-		DEF71F50BDC1483AB33AB739 /* KOROAD_Bold.ttf */ = {isa = PBXFileReference; name = "KOROAD_Bold.ttf"; path = "../src/assets/Fonts/KOROAD_Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		E03A95EF703D4D549DEB7170 /* KOROAD_Light.ttf */ = {isa = PBXFileReference; name = "KOROAD_Light.ttf"; path = "../src/assets/Fonts/KOROAD_Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		3FF58814F7E049E48E352868 /* KOROAD_Medium.ttf */ = {isa = PBXFileReference; name = "KOROAD_Medium.ttf"; path = "../src/assets/Fonts/KOROAD_Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -159,15 +159,15 @@
 			sourceTree = "<group>";
 		};
 		CEE989440E8D4AF093E7A9F5 /* Resources */ = {
-			isa = "PBXGroup";
+			isa = PBXGroup;
 			children = (
-				DEF71F50BDC1483AB33AB739 /* KOROAD_Bold.ttf */,
-				E03A95EF703D4D549DEB7170 /* KOROAD_Light.ttf */,
-				3FF58814F7E049E48E352868 /* KOROAD_Medium.ttf */,
+				834C179F9A9049CAB556B7C3 /* KOROADB.ttf */,
+				2E35E978AAC1435E9593A263 /* KOROADL.ttf */,
+				62B60C1E9EB9450480C80816 /* KOROADM.ttf */,
 			);
 			name = Resources;
-			sourceTree = "<group>";
 			path = "";
+			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
@@ -265,9 +265,9 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				92DD66C2CD5DAC8A255BEEE3 /* PrivacyInfo.xcprivacy in Resources */,
-				5AB0576787C4400E827E42B6 /* KOROAD_Bold.ttf in Resources */,
-				AF158C41D82D4CFEB8070670 /* KOROAD_Light.ttf in Resources */,
-				4EBC6FE8B0C446158B82F4BE /* KOROAD_Medium.ttf in Resources */,
+				D0C58A3544364A48A79368DC /* KOROADB.ttf in Resources */,
+				2C876801701542109E088D8F /* KOROADL.ttf in Resources */,
+				02272EE504474FD5BB2E0E95 /* KOROADM.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
