@@ -1,15 +1,44 @@
 import React, {useState} from 'react';
-import {Alert, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {
   Agenda,
   DateData,
-  AgendaEntry,
+  // AgendaEntry,
   AgendaSchedule,
 } from 'react-native-calendars';
 import moment from 'moment';
-import testIDs from './testIDs';
-
+import AddBtn from '../../Component/AddBtn';
 const today = moment().format('YYYY-MM-DD');
+
+type DataType = {
+  timeStamp: number;
+  date: string;
+  time: string;
+  category: string;
+  emo: string;
+  food: string[];
+  kcal: number;
+  weight: number;
+  toilet: string;
+  move: string;
+  location: string;
+  fullness: string;
+};
+
+const temData: DataType = {
+  timeStamp: 1740268800000,
+  date: '2025-02-23',
+  time: '12:00PM - 12:45PM',
+  category: '아침',
+  emo: '😄',
+  food: ['미역국', '쌀밥', '김치'],
+  kcal: 785,
+  weight: 200,
+  toilet: '원활',
+  move: '적당',
+  location: 'With Staff Member In House',
+  fullness: '적당',
+};
 
 const AgendaScreen = () => {
   const [items, setItems] = useState<AgendaSchedule | undefined>(undefined);
@@ -17,135 +46,114 @@ const AgendaScreen = () => {
   // 날짜 데이터를 로드하는 함수
   const loadItems = (day: DateData) => {
     const currentItems = items || {};
+    const strTime = day.dateString;
 
-    setTimeout(() => {
-      for (let i = -15; i < 85; i++) {
-        const time = day.timestamp + i * 24 * 60 * 60 * 1000; // 하루 단위로 시간 계산
-        const strTime = timeToString(time);
+    if (!currentItems[strTime]) {
+      currentItems[strTime] = [
+        {
+          name: temData.category, // "Julie Falcon"
+          time: temData.time, // "12:00PM - 12:45PM"
+          category: temData.food[0] + ', ' + temData.food?.[1] + '···.', // "Acu-Facial"
+          staff: temData.location, // "With Staff Member #1"
+          initials: temData.emo, // "JF"
+          height: 80,
+        },
+      ];
+    }
 
-        if (!currentItems[strTime]) {
-          currentItems[strTime] = [];
-
-          const numItems = Math.floor(Math.random() * 3 + 1);
-          for (let j = 0; j < numItems; j++) {
-            currentItems[strTime].push({
-              name: 'Item for ' + strTime + ' #' + j,
-              height: Math.max(50, Math.floor(Math.random() * 150)),
-              day: strTime,
-            });
-          }
-        }
-      }
-
-      const newItems: AgendaSchedule = {};
-      Object.keys(currentItems).forEach(key => {
-        newItems[key] = currentItems[key];
-      });
-
-      setItems(newItems); // 상태 업데이트
-    }, 1000);
-  };
-
-  // 날짜를 포맷팅하는 함수
-  const timeToString = (time: number) => {
-    const date = new Date(time);
-    return date.toISOString().split('T')[0];
+    setItems({...currentItems});
   };
 
   // 각 날짜 아이템을 렌더링하는 함수
-  const renderItem = (reservation: AgendaEntry, isFirst: boolean) => {
-    const fontSize = isFirst ? 16 : 14;
-    const color = isFirst ? 'black' : '#43515c';
-
+  const renderItem = (reservation: any) => {
     return (
-      <TouchableOpacity
-        testID={testIDs.agenda.ITEM}
-        style={[styles.item, {height: reservation.height}]}
-        onPress={() => Alert.alert(reservation.name)}>
-        <Text style={{fontSize, color}}>{reservation.name}</Text>
-      </TouchableOpacity>
+      <>
+        <TouchableOpacity style={styles.item}>
+          <View style={styles.leftContainer}>
+            <Text style={styles.time}>{reservation.time}</Text>
+            <Text style={styles.name}>{reservation.name}</Text>
+            <Text style={styles.category}>{reservation.category}</Text>
+            <Text style={styles.staff}>{reservation.staff}</Text>
+          </View>
+          <View style={styles.avatar}>
+            <Text style={styles.avatarText}>{reservation.initials}</Text>
+          </View>
+        </TouchableOpacity>
+      </>
     );
-  };
-
-  // 비어 있는 날짜를 렌더링하는 함수
-  const renderEmptyDate = () => {
-    return (
-      <View style={styles.emptyDate}>
-        <Text>This is empty date!</Text>
-      </View>
-    );
-  };
-
-  // 아이템 변경 여부를 확인하는 함수
-  const rowHasChanged = (r1: AgendaEntry, r2: AgendaEntry) => {
-    return r1.name !== r2.name;
   };
 
   return (
-    <View style={{flex: 1}}>
-      <View style={{height: 100, backgroundColor: 'red'}}>
-        <TestFontScreen />
+    <>
+      <View style={{flex: 1}}>
+        <Agenda
+          items={items}
+          loadItemsForMonth={loadItems}
+          selected={today}
+          renderItem={renderItem}
+          showClosingKnob={true}
+          showOnlySelectedDayItems
+          theme={{
+            calendarBackground: 'white',
+            todayTextColor: 'green',
+            dotColor: '#86dd71',
+            selectedDayBackgroundColor: '#86dd71',
+            todayDotColor: 'green',
+            indicatorColor: '#86dd71',
+            agendaTodayColor: 'green',
+          }}
+        />
       </View>
-      <Agenda
-        testID={testIDs.agenda.CONTAINER}
-        items={items}
-        loadItemsForMonth={loadItems}
-        selected={today}
-        renderItem={renderItem}
-        renderEmptyDate={renderEmptyDate}
-        rowHasChanged={rowHasChanged}
-        showClosingKnob={true} // Knob Bar 활성화
-        showOnlySelectedDayItems
-        theme={{
-          calendarBackground: 'white',
-          todayTextColor: 'green',
-          dotColor: '#86dd71',
-          selectedDayBackgroundColor: '#86dd71',
-          todayDotColor: 'green',
-          indicatorColor: '#86dd71',
-          agendaTodayColor: 'green',
-        }}
-      />
-    </View>
+      <AddBtn />
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   item: {
+    flexDirection: 'row',
     backgroundColor: 'white',
-    flex: 1,
-    borderRadius: 5,
-    padding: 10,
+    borderRadius: 10,
+    padding: 15,
     marginRight: 10,
     marginTop: 17,
+    alignItems: 'center',
+    elevation: 2,
   },
-  emptyDate: {
-    height: 15,
+  leftContainer: {
     flex: 1,
-    paddingTop: 30,
   },
-  customDay: {
+  time: {
+    fontSize: 14,
+    color: '#555',
+  },
+  name: {
     fontSize: 16,
     fontWeight: 'bold',
+    marginTop: 2,
   },
-  dayItem: {
+  category: {
+    fontSize: 14,
+    color: '#888',
+    marginTop: 2,
+  },
+  staff: {
+    fontSize: 14,
+    color: '#888',
+  },
+  avatar: {
+    width: 40,
     height: 40,
+    borderRadius: 24,
+    // backgroundColor: '#81d68e',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  avatarText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 20,
   },
 });
 
 export default AgendaScreen;
-
-const TestFontScreen = () => {
-  return (
-    <View>
-      <Text style={{fontFamily: 'KOROADB', fontSize: 20}}>
-        폰트 테스트 (KoroadBold)
-      </Text>
-      <Text style={{fontFamily: 'KOROADB', fontSize: 20}}>
-        기본 시스템 폰트 테스트
-      </Text>
-    </View>
-  );
-};
