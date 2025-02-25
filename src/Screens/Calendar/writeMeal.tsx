@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -7,16 +7,43 @@ import {
   TextInput,
   ScrollView,
   StyleSheet,
+  Platform,
 } from 'react-native';
 import DatePicker from 'react-native-date-picker';
-import {launchImageLibrary} from 'react-native-image-picker';
+import {
+  launchImageLibrary,
+  ImageLibraryOptions,
+} from 'react-native-image-picker';
+import {BackHandler} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
-const WriteMealScreen: React.FC = () => {
+const chevron_black = require('../../Assets/Header/chevron_black.png');
+
+const WriteMealScreen: React.FC = ({}) => {
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState(new Date());
   const [datePickerOpen, setDatePickerOpen] = useState(false);
   const [timePickerOpen, setTimePickerOpen] = useState(false);
   const [image, setImage] = useState<string | null>(null);
+
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    const backAction = () => {
+      if (navigation.canGoBack()) {
+        navigation.goBack();
+        return true;
+      }
+      return false;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, [navigation]);
 
   // 날짜 형식 변환: YYYY년 MM월 DD일
   const formatDate = (date: Date) => {
@@ -36,17 +63,28 @@ const WriteMealScreen: React.FC = () => {
     }); // 공백 정리
   };
 
-  // 이미지 선택 핸들러
-  const handleSelectImage = () => {
-    launchImageLibrary({mediaType: 'photo'}, response => {
+  const handleSelectImage = async (): Promise<void> => {
+    try {
+      const options: ImageLibraryOptions = {
+        mediaType: 'photo',
+      };
+
+      const response = await launchImageLibrary(options);
+
       if (
-        !response.didCancel &&
-        response.assets &&
-        response.assets.length > 0
+        response.didCancel ||
+        !response.assets ||
+        response.assets.length === 0
       ) {
-        setImage(response.assets[0].uri);
+        return;
       }
-    });
+
+      const imageUri = response.assets[0].uri ?? null; // undefined 방지 (null 대체 가능)
+
+      setImage(imageUri);
+    } catch (error) {
+      console.error('이미지 선택 중 오류 발생:', error);
+    }
   };
 
   return (
@@ -54,9 +92,13 @@ const WriteMealScreen: React.FC = () => {
       style={styles.container}
       contentContainerStyle={{paddingBottom: 20}}>
       {/* 헤더 */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => console.log('뒤로가기')}>
-          <Text style={styles.backButton}>{'←'}</Text>
+      <View style={[styles.header, Platform.OS == 'ios' && {marginTop: 60}]}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Image
+            source={chevron_black}
+            style={styles.chevron}
+            resizeMode="contain"
+          />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setDatePickerOpen(true)}>
           <Text style={styles.headerTitle}>{formatDate(date)}</Text>
@@ -253,6 +295,7 @@ const styles = StyleSheet.create({
     padding: 15,
     backgroundColor: '#fff',
   },
+  chevron: {width: 20, height: 20},
   emptyView: {
     width: 20,
     height: 30,
