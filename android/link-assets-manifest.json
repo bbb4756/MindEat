@@ -12,6 +12,22 @@
     {
       "path": "src/Assets/Fonts/KOROADM.ttf",
       "sha1": "87318af45c492aa7b027ced4a2c807af1b7c7e96"
+    },
+    {
+      "path": "src/Assets/Fonts/NanumSquareB.ttf",
+      "sha1": "8987ee230c6f11d1b1475422de16a173b1225171"
+    },
+    {
+      "path": "src/Assets/Fonts/NanumSquareEB.ttf",
+      "sha1": "757cdae4e4a80d08f9901c42e7c555cc0a012475"
+    },
+    {
+      "path": "src/Assets/Fonts/NanumSquareL.ttf",
+      "sha1": "a45331545555c353ecfdb9b117e7ffee947d5ad4"
+    },
+    {
+      "path": "src/Assets/Fonts/NanumSquareR.ttf",
+      "sha1": "1afd6f8457b0195144f2fc8852f97370415bb229"
     }
   ]
 }

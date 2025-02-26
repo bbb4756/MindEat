@@ -13,11 +13,15 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2C876801701542109E088D8F /* KOROADL.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2E35E978AAC1435E9593A263 /* KOROADL.ttf */; };
+		347766815A784B1C8B05A2A6 /* NanumSquareR.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0795AA8966904B7DA6BE58CE /* NanumSquareR.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		92DD66C2CD5DAC8A255BEEE3 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
+		A9A374B5F97545F4BDE83F72 /* NanumSquareB.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D5F049B74D2D4FF19620ABC7 /* NanumSquareB.ttf */; };
 		D0C58A3544364A48A79368DC /* KOROADB.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 834C179F9A9049CAB556B7C3 /* KOROADB.ttf */; };
+		D72C716EC50F4B8AA0A9EFF1 /* NanumSquareL.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B6CB89071AC43C085A4B2A8 /* NanumSquareL.ttf */; };
 		E33A84578E6102537EE7AA3B /* libPods-myApp-myAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A4B40C860CCED51456BA70A /* libPods-myApp-myAppTests.a */; };
 		ED6841D54C635245817B13F0 /* libPods-myApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 551ABB7F8CD6D59BFD06FC95 /* libPods-myApp.a */; };
+		F1E02CB627774D9EA7CEC74F /* NanumSquareEB.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C972E73D7ED94CCAB64222FB /* NanumSquareEB.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +38,7 @@
 		00E356EE1AD99517003FC87E /* myAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = myAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* myAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = myAppTests.m; sourceTree = "<group>"; };
+		0795AA8966904B7DA6BE58CE /* NanumSquareR.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = NanumSquareR.ttf; path = ../src/Assets/Fonts/NanumSquareR.ttf; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* myApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = myApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = myApp/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = myApp/AppDelegate.mm; sourceTree = "<group>"; };
@@ -43,12 +48,15 @@
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = myApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		19CFAAD4B4C9A4729191FC1A /* Pods-myApp-myAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-myApp-myAppTests.debug.xcconfig"; path = "Target Support Files/Pods-myApp-myAppTests/Pods-myApp-myAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		2E35E978AAC1435E9593A263 /* KOROADL.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = KOROADL.ttf; path = ../src/Assets/Fonts/KOROADL.ttf; sourceTree = "<group>"; };
+		4B6CB89071AC43C085A4B2A8 /* NanumSquareL.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = NanumSquareL.ttf; path = ../src/Assets/Fonts/NanumSquareL.ttf; sourceTree = "<group>"; };
 		551ABB7F8CD6D59BFD06FC95 /* libPods-myApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-myApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		62B60C1E9EB9450480C80816 /* KOROADM.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = KOROADM.ttf; path = ../src/Assets/Fonts/KOROADM.ttf; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = myApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		834C179F9A9049CAB556B7C3 /* KOROADB.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = KOROADB.ttf; path = ../src/Assets/Fonts/KOROADB.ttf; sourceTree = "<group>"; };
 		8A4B40C860CCED51456BA70A /* libPods-myApp-myAppTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-myApp-myAppTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C972E73D7ED94CCAB64222FB /* NanumSquareEB.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = NanumSquareEB.ttf; path = ../src/Assets/Fonts/NanumSquareEB.ttf; sourceTree = "<group>"; };
 		CB052BF20A1C8E7C99F4A8AD /* Pods-myApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-myApp.debug.xcconfig"; path = "Target Support Files/Pods-myApp/Pods-myApp.debug.xcconfig"; sourceTree = "<group>"; };
+		D5F049B74D2D4FF19620ABC7 /* NanumSquareB.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = NanumSquareB.ttf; path = ../src/Assets/Fonts/NanumSquareB.ttf; sourceTree = "<group>"; };
 		E7A2818B9C8B6834512D2627 /* Pods-myApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-myApp.release.xcconfig"; path = "Target Support Files/Pods-myApp/Pods-myApp.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		EE87CCF6EC8C96C0F4255839 /* Pods-myApp-myAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-myApp-myAppTests.release.xcconfig"; path = "Target Support Files/Pods-myApp-myAppTests/Pods-myApp-myAppTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -164,6 +172,10 @@
 				834C179F9A9049CAB556B7C3 /* KOROADB.ttf */,
 				2E35E978AAC1435E9593A263 /* KOROADL.ttf */,
 				62B60C1E9EB9450480C80816 /* KOROADM.ttf */,
+				D5F049B74D2D4FF19620ABC7 /* NanumSquareB.ttf */,
+				C972E73D7ED94CCAB64222FB /* NanumSquareEB.ttf */,
+				4B6CB89071AC43C085A4B2A8 /* NanumSquareL.ttf */,
+				0795AA8966904B7DA6BE58CE /* NanumSquareR.ttf */,
 			);
 			name = Resources;
 			path = "";
@@ -268,6 +280,10 @@
 				D0C58A3544364A48A79368DC /* KOROADB.ttf in Resources */,
 				2C876801701542109E088D8F /* KOROADL.ttf in Resources */,
 				02272EE504474FD5BB2E0E95 /* KOROADM.ttf in Resources */,
+				A9A374B5F97545F4BDE83F72 /* NanumSquareB.ttf in Resources */,
+				F1E02CB627774D9EA7CEC74F /* NanumSquareEB.ttf in Resources */,
+				D72C716EC50F4B8AA0A9EFF1 /* NanumSquareL.ttf in Resources */,
+				347766815A784B1C8B05A2A6 /* NanumSquareR.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
