@@ -171,35 +171,34 @@ const WriteMealScreen: React.FC = () => {
   };
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={{paddingBottom: 20}}>
+    <SafeAreaView style={{flex: 1}}>
       {/* 헤더 */}
-      <SafeAreaView>
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Image
-              source={chevron_black}
-              style={styles.chevron}
-              resizeMode="contain"
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => setDatePickerOpen(true)}
-            style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={styles.headerTitle}>{formatDate(date)}</Text>
-            <Image
-              source={down_arrow}
-              style={[
-                styles.downArrow,
-                Platform.OS === 'android' && {marginTop: 5},
-              ]}
-              resizeMode="contain"
-            />
-          </TouchableOpacity>
-          <View style={styles.emptyView} />
-        </View>
-
+      <View style={[styles.header]}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Image
+            source={chevron_black}
+            style={styles.chevron}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => setDatePickerOpen(true)}
+          style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text style={styles.headerTitle}>{formatDate(date)}</Text>
+          <Image
+            source={down_arrow}
+            style={[
+              styles.downArrow,
+              Platform.OS === 'android' && {marginTop: 5},
+            ]}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+        <View style={styles.emptyView} />
+      </View>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={{paddingBottom: 20}}>
         {/* 날짜 선택 Picker */}
         <DatePicker
           modal
@@ -219,7 +218,7 @@ const WriteMealScreen: React.FC = () => {
 
         {/* 이미지 추가 */}
         <TouchableOpacity
-          style={styles.imageContainer}
+          style={[styles.imageContainer]}
           onPress={handleSelectImage}>
           {image ? (
             <Image source={{uri: image}} style={styles.image} />
@@ -369,8 +368,8 @@ const WriteMealScreen: React.FC = () => {
           disabled={!isFormComplete}>
           <Text style={styles.saveButtonText}>저장</Text>
         </TouchableOpacity>
-      </SafeAreaView>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -385,6 +384,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: wp(15),
     backgroundColor: '#fff',
+    width: rw(100),
   },
   chevron: {width: wp(20), height: wp(20)},
   downArrow: {width: wp(15), height: wp(15)},
