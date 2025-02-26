@@ -52,6 +52,10 @@
 		<string>KOROADB.ttf</string>
 		<string>KOROADL.ttf</string>
 		<string>KOROADM.ttf</string>
+		<string>NanumSquareB.ttf</string>
+		<string>NanumSquareEB.ttf</string>
+		<string>NanumSquareL.ttf</string>
+		<string>NanumSquareR.ttf</string>
 	</array>
 </dict>
 </plist>
