@@ -16,54 +16,74 @@ import {
 } from 'react-native-image-picker';
 import {BackHandler} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+
+import {RootStackParamList} from '../../../App';
+import {StackNavigationProp} from '@react-navigation/stack';
+
+import {wp, rh, rw} from '../../Common/resize';
+
+type NavigationProps = StackNavigationProp<RootStackParamList>;
 
 const chevron_black = require('../../Assets/Header/chevron_black.png');
 const down_arrow = require('../../Assets/Header/down_arrow_full.png');
 const down_arrow2 = require('../../Assets/Header/down_arrow.png');
 
-const WriteMealScreen: React.FC = ({}) => {
+const WriteMealScreen: React.FC = () => {
+  const navigation = useNavigation<NavigationProps>();
+
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState(new Date());
   const [datePickerOpen, setDatePickerOpen] = useState(false);
   const [timePickerOpen, setTimePickerOpen] = useState(false);
   const [image, setImage] = useState<string | null>(null);
-  const [selectedOptions, setSelectedOptions] = useState<{
-    [key: string]: string | null;
-  }>({});
+  const [selectedMealType, setSelectedMealType] = useState<string | null>(null);
+  const [selectedCompanion, setSelectedCompanion] = useState<string | null>(
+    null,
+  );
+  const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
+  const [selectedSatiety, setSelectedSatiety] = useState<string | null>(null);
+  const [selectedSatisfaction, setSelectedSatisfaction] = useState<
+    string | null
+  >(null);
+  const [selectedEmotion, setSelectedEmotion] = useState<string | null>(null);
+  const [selectedSpecial, setSelectedSpecial] = useState<string | null>(null);
 
-  const categories = {
-    '식사 분류': ['아침', '점심', '저녁', '간식', '야식'],
-    '식사 상대': ['혼자', '친구', '연인', '가족', '직장동료', '기타'],
-    '식사 장소': ['집', '회사', '식당', '학교', '길거리', '기타'],
-    포만감: ['허기짐', '적당함', '배부름', '매우 배부름'],
-    '식사 만족도': ['매우아쉬움', '아쉬움', '무난함', '만족', '매우만족'],
-    '식사 감정': [
-      '무난함',
-      '짜증남',
-      '행복함',
-      '뿌듯함',
-      '우울함',
-      '즐거움',
-      '죄책감',
-      '두려움',
-      '무기력',
-      '불쾌함',
-      '후회됨',
-    ],
-    '특이 증상': [
-      '칼로리 강박',
-      '폭식하기',
-      '극단적 단식',
-      '씹고 뱉기',
-      '과한 운동',
-      '변비약 복용',
-      '토하기',
-      '식이량 제한',
-      '스트레스 상황',
-    ],
+  const isFormComplete =
+    selectedMealType &&
+    selectedCompanion &&
+    selectedLocation &&
+    selectedSatiety &&
+    selectedSatisfaction &&
+    selectedEmotion;
+
+  const handleSelect = (category: string, value: string) => {
+    switch (category) {
+      case 'mealType':
+        setSelectedMealType(value);
+        break;
+      case 'companion':
+        setSelectedCompanion(value);
+        break;
+      case 'location':
+        setSelectedLocation(value);
+        break;
+      case 'satiety':
+        setSelectedSatiety(value);
+        break;
+      case 'satisfaction':
+        setSelectedSatisfaction(value);
+        break;
+      case 'emotion':
+        setSelectedEmotion(value);
+        break;
+      case 'special':
+        setSelectedSpecial(value);
+        break;
+      default:
+        break;
+    }
   };
-
-  const navigation = useNavigation();
 
   useEffect(() => {
     const backAction = () => {
@@ -124,11 +144,30 @@ const WriteMealScreen: React.FC = ({}) => {
     }
   };
 
-  const handleOptionSelect = (category: string, option: string) => {
-    setSelectedOptions(prev => ({
-      ...prev,
-      [category]: prev[category] === option ? null : option,
-    }));
+  const renderOptions = (
+    category: string,
+    options: string[],
+    selectedValue: string | null,
+  ) => (
+    <View style={styles.buttonGroup}>
+      {options.map(option => (
+        <TouchableOpacity
+          key={option}
+          style={[
+            styles.optionButton,
+            selectedValue === option && {backgroundColor: '#888'},
+          ]}
+          onPress={() => handleSelect(category, option)}>
+          <Text>{option}</Text>
+        </TouchableOpacity>
+      ))}
+    </View>
+  );
+
+  const saveInfo = () => {
+    console.log('hihi');
+    //백엔드 저장 프로세스
+    navigation.navigate('CalendarMain');
   };
 
   return (
@@ -136,124 +175,201 @@ const WriteMealScreen: React.FC = ({}) => {
       style={styles.container}
       contentContainerStyle={{paddingBottom: 20}}>
       {/* 헤더 */}
-      <View style={[styles.header, Platform.OS == 'ios' && {marginTop: 60}]}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Image
-            source={chevron_black}
-            style={styles.chevron}
-            resizeMode="contain"
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setDatePickerOpen(true)}
-          style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Text style={styles.headerTitle}>{formatDate(date)}</Text>
-          <Image
-            source={down_arrow}
-            style={[
-              styles.downArrow,
-              Platform.OS === 'android' && {marginTop: 5},
-            ]}
-            resizeMode="contain"
-          />
-        </TouchableOpacity>
-        <View style={styles.emptyView} />
-      </View>
-
-      {/* 날짜 선택 Picker */}
-      <DatePicker
-        modal
-        locale="ko"
-        open={datePickerOpen}
-        date={date}
-        mode="date"
-        title="날짜 선택" // 모달 상단 제목 변경
-        cancelText="취소" // 취소 버튼 한글화
-        confirmText="확인" // 확인 버튼 한글화
-        onConfirm={selectedDate => {
-          setDatePickerOpen(false);
-          setDate(selectedDate);
-        }}
-        onCancel={() => setDatePickerOpen(false)}
-      />
-
-      {/* 이미지 추가 */}
-      <TouchableOpacity
-        style={styles.imageContainer}
-        onPress={handleSelectImage}>
-        {image ? (
-          <Image source={{uri: image}} style={styles.image} />
-        ) : (
-          <Text style={styles.imagePlaceholder}>사진 추가 (선택)</Text>
-        )}
-      </TouchableOpacity>
-
-      {/* 식사 시간 선택 */}
-      <View style={styles.timeSection}>
-        <Text style={styles.sectionTitle}>식사 시간*</Text>
-        <TouchableOpacity
-          style={styles.timeButton}
-          onPress={() => setTimePickerOpen(true)}>
-          <Text style={{marginRight: 6}}>{formatTime(time)}</Text>
-          <Image
-            source={down_arrow2}
-            style={[
-              styles.downArrow,
-              Platform.OS === 'android' && {marginTop: 5},
-            ]}
-          />
-        </TouchableOpacity>
-      </View>
-
-      {/* 시간 선택 Picker */}
-      <DatePicker
-        modal
-        locale="ko"
-        open={timePickerOpen}
-        date={time}
-        mode="time"
-        title="시간 선택"
-        cancelText="취소"
-        confirmText="확인"
-        onConfirm={selectedTime => {
-          setTimePickerOpen(false);
-          setTime(selectedTime);
-        }}
-        onCancel={() => setTimePickerOpen(false)}
-      />
-      {Object.entries(categories).map(([category, options]) => (
-        <View key={category} style={styles.section}>
-          <Text style={styles.sectionTitle}>{category}</Text>
-          <View style={styles.buttonGroup}>
-            {options.map(option => (
-              <TouchableOpacity
-                key={option}
-                style={[
-                  styles.optionButton,
-                  selectedOptions[category] === option && styles.selectedOption,
-                ]}
-                onPress={() => handleOptionSelect(category, option)}>
-                <Text>{option}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
+      <SafeAreaView>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Image
+              source={chevron_black}
+              style={styles.chevron}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setDatePickerOpen(true)}
+            style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text style={styles.headerTitle}>{formatDate(date)}</Text>
+            <Image
+              source={down_arrow}
+              style={[
+                styles.downArrow,
+                Platform.OS === 'android' && {marginTop: 5},
+              ]}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
+          <View style={styles.emptyView} />
         </View>
-      ))}
 
-      {/* 메모 기록 */}
-      <View style={styles.section}>
-        <Text style={[styles.sectionTitle, {marginBottom: 5}]}>식사 메모</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="당시의 감정이나 느낀점을 간단히 적어주세요."
-          multiline
+        {/* 날짜 선택 Picker */}
+        <DatePicker
+          modal
+          locale="ko"
+          open={datePickerOpen}
+          date={date}
+          mode="date"
+          title="날짜 선택" // 모달 상단 제목 변경
+          cancelText="취소" // 취소 버튼 한글화
+          confirmText="확인" // 확인 버튼 한글화
+          onConfirm={selectedDate => {
+            setDatePickerOpen(false);
+            setDate(selectedDate);
+          }}
+          onCancel={() => setDatePickerOpen(false)}
         />
-      </View>
 
-      {/* 저장 버튼 */}
-      <TouchableOpacity style={styles.saveButton} activeOpacity={0.8}>
-        <Text style={styles.saveButtonText}>저장</Text>
-      </TouchableOpacity>
+        {/* 이미지 추가 */}
+        <TouchableOpacity
+          style={styles.imageContainer}
+          onPress={handleSelectImage}>
+          {image ? (
+            <Image source={{uri: image}} style={styles.image} />
+          ) : (
+            <Text style={styles.imagePlaceholder}>사진 추가 (선택)</Text>
+          )}
+        </TouchableOpacity>
+
+        {/* 식사 시간 선택 */}
+        <View style={styles.timeSection}>
+          <Text style={styles.sectionTitle}>식사 시간 *</Text>
+          <TouchableOpacity
+            style={styles.timeButton}
+            onPress={() => setTimePickerOpen(true)}>
+            <Text style={{marginRight: 6}}>{formatTime(time)}</Text>
+            <Image
+              source={down_arrow2}
+              style={[
+                styles.downArrow,
+                Platform.OS === 'android' && {marginTop: 5},
+              ]}
+            />
+          </TouchableOpacity>
+        </View>
+
+        {/* 시간 선택 Picker */}
+        <DatePicker
+          modal
+          locale="ko"
+          open={timePickerOpen}
+          date={time}
+          mode="time"
+          title="시간 선택"
+          cancelText="취소"
+          confirmText="확인"
+          onConfirm={selectedTime => {
+            setTimePickerOpen(false);
+            setTime(selectedTime);
+          }}
+          onCancel={() => setTimePickerOpen(false)}
+        />
+        <View style={styles.section}>
+          <Text>식사 분류*</Text>
+          {renderOptions(
+            'mealType',
+            ['아침', '점심', '저녁', '간식', '야식'],
+            selectedMealType,
+          )}
+        </View>
+
+        <View style={styles.section}>
+          <Text>식사 상대*</Text>
+          {renderOptions(
+            'companion',
+            ['혼자', '친구', '연인', '가족', '직장동료', '기타'],
+            selectedCompanion,
+          )}
+        </View>
+
+        <View style={styles.section}>
+          <Text>식사 장소*</Text>
+          {renderOptions(
+            'location',
+            ['집', '회사', '식당', '학교', '길거리', '기타'],
+            selectedLocation,
+          )}
+        </View>
+
+        <View style={styles.section}>
+          <Text>포만감*</Text>
+          {renderOptions(
+            'satiety',
+            ['허기짐', '적당함', '배부름', '매우 배부름'],
+            selectedSatiety,
+          )}
+        </View>
+
+        <View style={styles.section}>
+          <Text>식사 만족도*</Text>
+          {renderOptions(
+            'satisfaction',
+            ['매우아쉬움', '아쉬움', '무난함', '만족', '매우만족'],
+            selectedSatisfaction,
+          )}
+        </View>
+
+        <View style={styles.section}>
+          <Text>식사 후 감정*</Text>
+          {renderOptions(
+            'emotion',
+            [
+              '무난함',
+              '짜증남',
+              '행복함',
+              '뿌듯함',
+              '우울함',
+              '즐거움',
+              '죄책감',
+              '두려움',
+              '무기력',
+              '불쾌함',
+              '후회됨',
+            ],
+            selectedEmotion,
+          )}
+        </View>
+
+        <View style={styles.section}>
+          <Text>식사 특이 사항*</Text>
+          {renderOptions(
+            'special',
+            [
+              '칼로리 강박',
+              '폭식하기',
+              '극단적 단식',
+              '씹고 뱉기',
+              '과한 운동',
+              '변비약 복용',
+              '토하기',
+              '식이량 제한',
+              '스트레스 상황',
+              '없음',
+            ],
+            selectedSpecial,
+          )}
+        </View>
+        {/* 메모 기록 */}
+        <View style={styles.section}>
+          <Text style={[styles.sectionTitle, {marginBottom: 5}]}>
+            식사 메모
+          </Text>
+          <TextInput
+            style={styles.input}
+            placeholder="당시의 감정이나 느낀점을 간단히 적어주세요."
+            multiline
+          />
+        </View>
+
+        {/* 저장 버튼 */}
+        <TouchableOpacity
+          onPress={() => saveInfo()}
+          style={[
+            styles.saveButton,
+            {backgroundColor: isFormComplete ? '#92e0a6' : '#ccc'},
+          ]}
+          activeOpacity={isFormComplete ? 0.8 : 1}
+          disabled={!isFormComplete}>
+          <Text style={styles.saveButtonText}>저장</Text>
+        </TouchableOpacity>
+      </SafeAreaView>
     </ScrollView>
   );
 };
@@ -267,94 +383,94 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 15,
+    padding: wp(15),
     backgroundColor: '#fff',
   },
-  chevron: {width: 20, height: 20},
-  downArrow: {width: 15, height: 15},
+  chevron: {width: wp(20), height: wp(20)},
+  downArrow: {width: wp(15), height: wp(15)},
   emptyView: {
-    width: 20,
-    height: 30,
+    width: wp(20),
+    height: wp(30),
   },
   backButton: {
-    fontSize: 20,
+    fontSize: wp(20),
     color: '#333',
   },
   headerTitle: {
-    fontSize: 18,
+    fontSize: wp(18),
     fontWeight: 'bold',
-    marginRight: 10,
+    marginRight: wp(10),
   },
   imageContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    height: 350,
-    margin: 10,
+    height: wp(350),
+    margin: wp(10),
     borderWidth: 1,
     borderColor: '#ccc',
-    borderRadius: 10,
+    borderRadius: wp(10),
   },
   imagePlaceholder: {
     color: '#999',
   },
   image: {
-    width: '100%',
-    height: '100%',
+    width: rw(100),
+    height: rh(100),
     borderRadius: 10,
   },
   timeSection: {
     width: '100%',
-    paddingHorizontal: 15,
+    paddingHorizontal: wp(15),
     backgroundColor: '#fff',
-    marginBottom: 10,
+    marginBottom: wp(10),
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   section: {
-    padding: 15,
+    padding: wp(15),
     backgroundColor: '#fff',
-    marginBottom: 10,
+    marginBottom: wp(10),
   },
-  sectionTitle: {fontFamily: 'NanumSquareB', fontSize: 16},
+  sectionTitle: {fontFamily: 'NanumSquareB', fontSize: wp(16)},
   toggle: {
     alignSelf: 'flex-end',
   },
   timeButton: {
-    marginVertical: 10,
-    padding: 10,
+    marginVertical: wp(10),
+    padding: wp(10),
     backgroundColor: '#ddd',
     alignSelf: 'flex-start',
-    borderRadius: 5,
+    borderRadius: wp(5),
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   buttonGroup: {
-    marginTop: 10,
+    marginTop: wp(10),
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 10,
+    gap: wp(10),
   },
   optionButton: {
-    padding: 10,
+    padding: wp(10),
     backgroundColor: '#ddd',
-    borderRadius: 5,
-    marginRight: 5,
+    borderRadius: wp(5),
+    marginRight: wp(5),
   },
   input: {
     borderWidth: 1,
     borderColor: '#ccc',
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 5,
+    padding: wp(10),
+    borderRadius: wp(5),
+    marginTop: wp(5),
   },
   saveButton: {
     backgroundColor: '#92e0a6',
-    padding: 15,
+    padding: wp(15),
     alignItems: 'center',
-    margin: 15,
-    borderRadius: 5,
+    margin: wp(15),
+    borderRadius: wp(5),
   },
   saveButtonText: {
     color: '#ffffff',
