@@ -49,7 +49,7 @@ const HomeStackNavigator: React.FC = () => (
     <HomeStack.Screen
       name="Login"
       component={Login}
-      options={{title: '로그인'}}
+      options={{title: '로그인', headerShown: false}}
     />
   </HomeStack.Navigator>
 );
@@ -177,7 +177,11 @@ const App: React.FC = () => {
               Platform.OS === 'ios' && {marginBottom: 15},
             ],
           })}>
-          <Tab.Screen name="Home" component={HomeStackNavigator} />
+          <Tab.Screen
+            name="Home"
+            component={HomeStackNavigator}
+            options={{headerShown: false}}
+          />
           <Tab.Screen
             name="CalendarScreen"
             component={CalendarStackNavigator}

@@ -1,37 +1,48 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import Svg, {Path} from 'react-native-svg';
+import {wp, rw, rh} from '../../Common/resize';
+import {SafeAreaView} from 'react-native-safe-area-context';
+
+const kakaotalk_icon = require('../../Assets/Login/kakaotalk_icon.png');
+const naver_icon = require('../../Assets/Login/naver_icon.png');
+const google_icon = require('../../Assets/Login/google_icon.png');
+const x_icon = require('../../Assets/Login/x_icon.png');
+
+// SNS 버튼 정보
+const snsButtons = [kakaotalk_icon, naver_icon, google_icon, x_icon];
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    paddingHorizontal: 24,
-    paddingTop: 40,
+    paddingHorizontal: wp(24),
+    paddingTop: wp(40),
   },
   backButton: {
     position: 'absolute',
-    top: 20,
-    left: 20,
-    padding: 10,
+    top: wp(20),
+    left: wp(20),
+    padding: wp(10),
   },
   textContainer: {
-    marginTop: 60,
+    marginTop: rh(10),
     alignItems: 'center',
+    // backgroundColor: 'red',
   },
   description: {
     width: 300,
     fontSize: 30,
     height: 100,
-    // fontFamily: 'KOROADB',
-
+    fontFamily: 'NanumSquareR',
+    lineHeight: wp(40),
     textAlign: 'left',
     color: '#333',
     marginBottom: 20,
   },
   logoText: {
     width: 300,
-    fontSize: 44,
+    fontSize: wp(44),
     fontFamily: 'KOROADB',
     // fontStyle: 'italic',
     color: '#32CD32',
@@ -59,29 +70,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   snsIcon: {
-    fontSize: 20,
+    fontSize: wp(20),
     fontWeight: 'bold',
     color: 'white',
   },
 });
 const Login = () => {
   return (
-    <View style={styles.container}>
-      {/* 뒤로가기 버튼 */}
-      <TouchableOpacity style={styles.backButton}>
-        <Svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="black"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round">
-          <Path d="M15 18l-6-6 6-6" />
-        </Svg>
-      </TouchableOpacity>
-
+    <SafeAreaView style={styles.container}>
       {/* 텍스트 및 로고 */}
       <View style={styles.textContainer}>
         <Text style={styles.description}>
@@ -96,43 +92,17 @@ const Login = () => {
       <Text style={styles.snsText}>SNS 계정으로 간편 가입하기</Text>
       <View style={styles.snsContainer}>
         {snsButtons.map((sns, index) => (
-          <TouchableOpacity
-            key={index}
-            style={[styles.snsButton, {backgroundColor: sns.color}]}>
-            {sns.icon}
+          <TouchableOpacity key={index} style={[styles.snsButton]}>
+            <Image
+              source={sns}
+              style={{width: wp(46), height: wp(46)}}
+              resizeMode="contain"
+            />
           </TouchableOpacity>
         ))}
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
-
-// SNS 버튼 정보
-const snsButtons = [
-  {
-    name: 'kakao',
-    color: '#FEE500',
-    icon: <Text style={styles.snsIcon}>💬</Text>, // 카카오톡 말풍선 이모지
-  },
-  {
-    name: 'naver',
-    color: '#03C75A',
-    icon: <Text style={styles.snsIcon}>N</Text>, // 네이버 N
-  },
-  {
-    name: 'apple',
-    color: '#000000',
-    icon: (
-      <Svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-        <Path d="M18.7 13.4c-.1-2.2 1.8-3.3 1.9-3.4-1-1.5-2.5-1.7-3-1.7-1.3-.1-2.6.8-3.2.8s-1.7-.8-2.8-.8c-1.4 0-2.8.8-3.6 2-.1.1-1 1.5-1 3.5 0 2.7 2 5.2 2.7 6.2.7 1 1.5 2 2.7 2s1.5-.7 2.8-.7 1.6.7 2.8.7c1.2 0 2-1 2.7-2 .5-.8.7-1.6.8-1.6 0 0-1.5-.6-1.6-3zM15.6 4.6c.7-.9 1.1-2 1-3-.9.1-2 .6-2.6 1.4-.6.7-1.1 1.9-1 3 .9.1 1.9-.5 2.6-1.4z" />
-      </Svg>
-    ),
-  },
-  {
-    name: 'google',
-    color: '#4285F4',
-    icon: <Text style={styles.snsIcon}>G</Text>, // Google G
-  },
-];
 
 export default Login;

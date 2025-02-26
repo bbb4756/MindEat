@@ -261,7 +261,7 @@ const WriteMealScreen: React.FC = () => {
           onCancel={() => setTimePickerOpen(false)}
         />
         <View style={styles.section}>
-          <Text>식사 분류*</Text>
+          <Text style={styles.sectionTitle}>식사 분류*</Text>
           {renderOptions(
             'mealType',
             ['아침', '점심', '저녁', '간식', '야식'],
@@ -270,7 +270,7 @@ const WriteMealScreen: React.FC = () => {
         </View>
 
         <View style={styles.section}>
-          <Text>식사 상대*</Text>
+          <Text style={styles.sectionTitle}>식사 상대*</Text>
           {renderOptions(
             'companion',
             ['혼자', '친구', '연인', '가족', '직장동료', '기타'],
@@ -279,7 +279,7 @@ const WriteMealScreen: React.FC = () => {
         </View>
 
         <View style={styles.section}>
-          <Text>식사 장소*</Text>
+          <Text style={styles.sectionTitle}>식사 장소*</Text>
           {renderOptions(
             'location',
             ['집', '회사', '식당', '학교', '길거리', '기타'],
@@ -288,7 +288,7 @@ const WriteMealScreen: React.FC = () => {
         </View>
 
         <View style={styles.section}>
-          <Text>포만감*</Text>
+          <Text style={styles.sectionTitle}>포만감*</Text>
           {renderOptions(
             'satiety',
             ['허기짐', '적당함', '배부름', '매우 배부름'],
@@ -297,7 +297,7 @@ const WriteMealScreen: React.FC = () => {
         </View>
 
         <View style={styles.section}>
-          <Text>식사 만족도*</Text>
+          <Text style={styles.sectionTitle}>식사 만족도*</Text>
           {renderOptions(
             'satisfaction',
             ['매우아쉬움', '아쉬움', '무난함', '만족', '매우만족'],
@@ -306,7 +306,7 @@ const WriteMealScreen: React.FC = () => {
         </View>
 
         <View style={styles.section}>
-          <Text>식사 후 감정*</Text>
+          <Text style={styles.sectionTitle}>식사 후 감정*</Text>
           {renderOptions(
             'emotion',
             [
@@ -327,7 +327,7 @@ const WriteMealScreen: React.FC = () => {
         </View>
 
         <View style={styles.section}>
-          <Text>식사 특이 사항*</Text>
+          <Text style={styles.sectionTitle}>식사 특이 사항*</Text>
           {renderOptions(
             'special',
             [
