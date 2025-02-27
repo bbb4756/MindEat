@@ -1,9 +1,17 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
-import Svg, {Path} from 'react-native-svg';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  Platform,
+} from 'react-native';
 import {wp, rw, rh} from '../../Common/resize';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
+const main_image = require('../../Assets/Login/login_image.jpg');
+const main_image2 = require('../../Assets/Login/login_image2.jpg');
 const kakaotalk_icon = require('../../Assets/Login/kakaotalk_icon.png');
 const naver_icon = require('../../Assets/Login/naver_icon.png');
 const google_icon = require('../../Assets/Login/google_icon.png');
@@ -17,19 +25,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     paddingHorizontal: wp(24),
-    paddingTop: wp(40),
+    paddingVertical: wp(30),
   },
-  backButton: {
-    position: 'absolute',
-    top: wp(20),
-    left: wp(20),
-    padding: wp(10),
-  },
+
   textContainer: {
     marginTop: rh(10),
     alignItems: 'center',
     // backgroundColor: 'red',
   },
+  imageContainer: {width: rw(90), height: wp(300)},
+  mainImageStyle: {width: rw(90), height: wp(260)},
   description: {
     width: 300,
     fontSize: 30,
@@ -54,12 +59,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 14,
     color: '#666',
-    marginTop: 300,
+    marginBottom: wp(20),
   },
+
   snsContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 20,
+    // backgroundColor: 'purple',
   },
   snsButton: {
     width: 50,
@@ -87,9 +93,17 @@ const Login = () => {
           MindEat<Text style={styles.dot}>.</Text>
         </Text>
       </View>
+      {/* 이미지 박스 */}
+      <View style={styles.imageContainer}>
+        <Image
+          source={main_image2}
+          style={styles.mainImageStyle}
+          resizeMode="cover"
+        />
+      </View>
 
       {/* SNS 로그인 */}
-      <Text style={styles.snsText}>SNS 계정으로 간편 가입하기</Text>
+      <Text style={[styles.snsText]}>SNS 계정으로 간편 가입하기</Text>
       <View style={styles.snsContainer}>
         {snsButtons.map((sns, index) => (
           <TouchableOpacity key={index} style={[styles.snsButton]}>
